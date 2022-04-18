@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+
+  void goToWebViewScreen(BuildContext ctx) {
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(ctx).pushReplacementNamed('/home');
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
     goToWebViewScreen(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(0.0, 0.0),
@@ -21,11 +38,5 @@ class SplashScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void goToWebViewScreen(BuildContext ctx) {
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(ctx).pushReplacementNamed('/home');
-    });
   }
 }
