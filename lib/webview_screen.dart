@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -102,6 +103,17 @@ class _HomePageState extends State<HomeScreen> {
                   print('Page finished loading: $url');
                 }
               },
+              gestureRecognizers: Set()
+                ..add(Factory<VerticalDragGestureRecognizer>(
+                    () => VerticalDragGestureRecognizer()
+                      ..onDown = (DragDownDetails dragDownDetails) {
+                        _controller.getScrollY().then((value) {
+                          if (value == 0 &&
+                              dragDownDetails.globalPosition.direction < 1) {
+                            _controller.reload();
+                          }
+                        });
+                      })),
             ),
           ),
           _isLoading
@@ -133,11 +145,11 @@ class _HomePageState extends State<HomeScreen> {
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width,
-                        color: Colors.black,
+                        color: Colors.white,
                         alignment: Alignment.center,
                         child: const Text(
                             "تاكد من الاتصال بالانترنت تم اسحب لاسفل",
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(color: Colors.black)),
                       ),
                     ),
                   ),
@@ -184,7 +196,8 @@ class _HomePageState extends State<HomeScreen> {
                     },
                     child: const Text('عودة',
                         textAlign: TextAlign.left,
-                        style: TextStyle(fontWeight: FontWeight.bold ,color: Colors.blue)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.blue)),
                   ),
                   TextButton(
                     onPressed: () {
