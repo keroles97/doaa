@@ -108,8 +108,14 @@ class _HomePageState extends State<HomeScreen> {
                     () => VerticalDragGestureRecognizer()
                       ..onDown = (DragDownDetails dragDownDetails) {
                         _controller.getScrollY().then((value) {
-                          if (value == 0 &&
-                              dragDownDetails.globalPosition.direction < 1) {
+                          if (value == 0
+                              && dragDownDetails.globalPosition.direction < 1
+                              && dragDownDetails.globalPosition.direction > 0.3
+                          ) {
+                            if (kDebugMode) {
+                              print(value.toString());
+                              print(dragDownDetails.globalPosition.direction.toString());
+                            }
                             _controller.reload();
                           }
                         });
