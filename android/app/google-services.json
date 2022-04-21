@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "893696916148",
+    "project_id": "do3a-2613b",
+    "storage_bucket": "do3a-2613b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893696916148:android:330576217c5876e74675e1",
+        "android_client_info": {
+          "package_name": "com.do3anet.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "893696916148-21p5n1j9l3mcuidg68v72bdmfh3cirok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWGABtrG3cUN5qtzZfPbMPMEAIPiSSyfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "893696916148-21p5n1j9l3mcuidg68v72bdmfh3cirok.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "893696916148-r00scu71jesel2b7p5s8u3n4fm3pgbf6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.doaa.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
