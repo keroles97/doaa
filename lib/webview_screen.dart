@@ -98,7 +98,7 @@ class _HomePageState extends State<HomeScreen> {
                 }
               },
               onPageFinished: (String url) {
-                _controller.runJavascript("");
+                _controller.runJavascript(jsString);
                 setState(() {
                   _isLoading = false;
                 });
