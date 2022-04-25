@@ -24,6 +24,8 @@ class _HomePageState extends State<HomeScreen> {
 
   bool _isLoading = true;
   bool _isOnline = true;
+  final jsString =
+      'document.addEventListener("contextmenu", event => event.preventDefault());';
 
   @override
   void initState() {
@@ -96,6 +98,7 @@ class _HomePageState extends State<HomeScreen> {
                 }
               },
               onPageFinished: (String url) {
+                _controller.runJavascript("");
                 setState(() {
                   _isLoading = false;
                 });
@@ -108,13 +111,13 @@ class _HomePageState extends State<HomeScreen> {
                     () => VerticalDragGestureRecognizer()
                       ..onDown = (DragDownDetails dragDownDetails) {
                         _controller.getScrollY().then((value) {
-                          if (value == 0
-                              && dragDownDetails.globalPosition.direction < 1
-                              && dragDownDetails.globalPosition.direction > 0.3
-                          ) {
+                          if (value == 0 &&
+                              dragDownDetails.globalPosition.direction < 1 &&
+                              dragDownDetails.globalPosition.direction > 0.7) {
                             if (kDebugMode) {
                               print(value.toString());
-                              print(dragDownDetails.globalPosition.direction.toString());
+                              print(dragDownDetails.globalPosition.direction
+                                  .toString());
                             }
                             _controller.reload();
                           }
