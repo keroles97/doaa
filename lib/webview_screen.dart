@@ -52,6 +52,7 @@ class _HomePageState extends State<HomeScreen> {
                     .then((value) => _controller = value);
                 _controllerCompleter.complete(webViewController);
               },
+              gestureNavigationEnabled: false,
               navigationDelegate: (NavigationRequest request) {
                 if (request.url.contains("mailto:") ||
                     request.url.contains("tel:") ||
@@ -97,8 +98,8 @@ class _HomePageState extends State<HomeScreen> {
                   print('Page started callback');
                 }
               },
-              onPageFinished: (String url) {
-                _controller.runJavascript(jsString);
+              onPageFinished: (String url) async {
+                _controller.runJavascriptReturningResult(jsString);
                 setState(() {
                   _isLoading = false;
                 });
@@ -115,8 +116,8 @@ class _HomePageState extends State<HomeScreen> {
                               dragDownDetails.globalPosition.direction < 1 &&
                               dragDownDetails.globalPosition.direction > 0.7) {
                             if (kDebugMode) {
-                              print(value.toString());
-                              print(dragDownDetails.globalPosition.direction
+                              print('v:' + value.toString());
+                              print('d: ' + dragDownDetails.globalPosition.direction
                                   .toString());
                             }
                             _controller.reload();
