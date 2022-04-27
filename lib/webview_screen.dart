@@ -24,8 +24,9 @@ class _HomePageState extends State<HomeScreen> {
 
   bool _isLoading = true;
   bool _isOnline = true;
-  final jsString =
+  final jsString1 =
       'document.addEventListener("contextmenu", event => event.preventDefault());';
+  final jsString2 = 'window.alert = function() {};';
 
   @override
   void initState() {
@@ -99,7 +100,8 @@ class _HomePageState extends State<HomeScreen> {
                 }
               },
               onPageFinished: (String url) async {
-                _controller.runJavascriptReturningResult(jsString);
+                _controller.runJavascriptReturningResult(jsString2);
+                _controller.runJavascriptReturningResult(jsString1);
                 setState(() {
                   _isLoading = false;
                 });
@@ -117,8 +119,9 @@ class _HomePageState extends State<HomeScreen> {
                               dragDownDetails.globalPosition.direction > 0.7) {
                             if (kDebugMode) {
                               print('v:' + value.toString());
-                              print('d: ' + dragDownDetails.globalPosition.direction
-                                  .toString());
+                              print('d: ' +
+                                  dragDownDetails.globalPosition.direction
+                                      .toString());
                             }
                             _controller.reload();
                           }
