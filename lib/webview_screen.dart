@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -36,6 +35,7 @@ class _HomePageState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(0.0, 0.0),
@@ -55,6 +55,9 @@ class _HomePageState extends State<HomeScreen> {
               },
               gestureNavigationEnabled: false,
               navigationDelegate: (NavigationRequest request) {
+                if (kDebugMode) {
+                  print('url: ${request.url}');
+                }
                 if (request.url.contains("mailto:") ||
                     request.url.contains("tel:") ||
                     request.url.contains("messenger") ||
@@ -64,6 +67,9 @@ class _HomePageState extends State<HomeScreen> {
                     request.url.contains("whats") ||
                     request.url.contains("facebook") ||
                     request.url.contains("intent") ||
+                    request.url.contains("telegram") ||
+                    request.url.contains("apk") ||
+                    request.url.contains("media") ||
                     request.url.contains("sms")) {
                   launch(request.url);
                   return NavigationDecision.prevent;
@@ -109,24 +115,58 @@ class _HomePageState extends State<HomeScreen> {
                   print('Page finished loading: $url');
                 }
               },
-              gestureRecognizers: Set()
-                ..add(Factory<VerticalDragGestureRecognizer>(
-                    () => VerticalDragGestureRecognizer()
-                      ..onDown = (DragDownDetails dragDownDetails) {
-                        _controller.getScrollY().then((value) {
-                          if (value == 0 &&
-                              dragDownDetails.globalPosition.direction < 1 &&
-                              dragDownDetails.globalPosition.direction > 0.7) {
-                            if (kDebugMode) {
-                              print('v:' + value.toString());
-                              print('d: ' +
-                                  dragDownDetails.globalPosition.direction
-                                      .toString());
-                            }
-                            _controller.reload();
-                          }
-                        });
-                      })),
+              // gestureRecognizers: Set()
+              //   ..add(Factory<VerticalDragGestureRecognizer>(
+              //       () => VerticalDragGestureRecognizer()
+              //         ..onDown = (DragDownDetails dragDownDetails) {
+              //           _controller.getScrollY().then((y) {
+              //             if (kDebugMode) {
+              //               print('y value: $y');
+              //               print('globalPosition: ${dragDownDetails.globalPosition}');
+              //               print('dx: ${dragDownDetails.globalPosition.dx}');
+              //               print('dy: ${dragDownDetails.globalPosition.dy}');
+              //               print(
+              //                   'direction: ${dragDownDetails.globalPosition.direction}');
+              //               print(
+              //                   'localPosition: ${dragDownDetails.localPosition}');
+              //             }
+              //             if (y == 0 &&
+              //                 dragDownDetails.globalPosition.direction < 1 &&
+              //                 dragDownDetails.globalPosition.direction > 0.7 &&
+              //                 dragDownDetails.globalPosition.dy < 400
+              //             ) {
+              //               _controller.reload();
+              //             }
+              //           });
+              //         })),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            right: 1,
+            left: 1,
+            child: Center(
+              child: SizedBox(
+                height: size.height * .13,
+                width: size.width * .5,
+                child: RefreshIndicator(
+                  color: Colors.blue,
+                  onRefresh: () async {
+                    if (kDebugMode) {
+                      print('refreshing');
+                    }
+                    _controller.reload();
+                    return Future.delayed(const Duration(milliseconds: 1), () {});
+                  },
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: SizedBox(
+                      height: size.height * .2,
+                      width: size.width * .5,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
           _isLoading
