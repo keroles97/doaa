@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -23,14 +24,12 @@ class _HomePageState extends State<HomeScreen> {
 
   bool _isLoading = true;
   bool _isOnline = true;
-  final jsString1 =
-      'document.addEventListener("contextmenu", event => event.preventDefault());';
-  final jsString2 = 'window.alert = function() {};';
 
   @override
   void initState() {
     super.initState();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    if (Platform.isIOS) _getUserLocation();
   }
 
   @override
@@ -106,8 +105,6 @@ class _HomePageState extends State<HomeScreen> {
                 }
               },
               onPageFinished: (String url) async {
-                _controller.runJavascriptReturningResult(jsString2);
-                _controller.runJavascriptReturningResult(jsString1);
                 setState(() {
                   _isLoading = false;
                 });
@@ -156,7 +153,8 @@ class _HomePageState extends State<HomeScreen> {
                       print('refreshing');
                     }
                     _controller.reload();
-                    return Future.delayed(const Duration(milliseconds: 1), () {});
+                    return Future.delayed(
+                        const Duration(milliseconds: 1), () {});
                   },
                   child: SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -264,5 +262,26 @@ class _HomePageState extends State<HomeScreen> {
               ));
       return false;
     }
+  }
+
+  Position? _getUserLocation() {
+    Geolocator.isLocationServiceEnabled().then((serviceEnabled) {
+      if (serviceEnabled) {
+        Geolocator.checkPermission().then((permission) {
+          if (permission == LocationPermission.denied) {
+            Geolocator.requestPermission().then((permissionResult) {
+              if (permissionResult == LocationPermission.whileInUse) {
+                Geolocator.getCurrentPosition().then((position) {
+                  return position;
+                });
+              }
+              return null;
+            });
+          }
+          return null;
+        });
+      }
+      return null;
+    });
   }
 }
