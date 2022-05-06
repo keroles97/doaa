@@ -66,7 +66,8 @@ class _HomePageState extends State<HomeScreen> {
                     request.url.contains("intent") ||
                     request.url.contains("telegram") ||
                     request.url.contains("apk") ||
-                    request.url.contains("media") ||
+                    request.url.contains(".mp3") ||
+                    request.url.contains(".mp4") ||
                     request.url.contains("sms")) {
                   launch(request.url);
                   return NavigationDecision.prevent;
