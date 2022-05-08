@@ -44,6 +44,8 @@ class _HomePageState extends State<HomeScreen> {
             onWillPop: () => _handleBack(context),
             child: WebView(
               initialUrl: _url,
+              zoomEnabled: false,
+              allowsInlineMediaPlayback: false,
               javascriptMode: JavascriptMode.unrestricted,
               onWebViewCreated: (WebViewController webViewController) {
                 _controllerCompleter.future
@@ -55,6 +57,7 @@ class _HomePageState extends State<HomeScreen> {
                 if (kDebugMode) {
                   print('url: ${request.url}');
                 }
+                print('url: ${request.url}');
                 if (request.url.contains("mailto:") ||
                     request.url.contains("tel:") ||
                     request.url.contains("messenger") ||
@@ -111,30 +114,6 @@ class _HomePageState extends State<HomeScreen> {
                   print('Page finished loading: $url');
                 }
               },
-              // gestureRecognizers: Set()
-              //   ..add(Factory<VerticalDragGestureRecognizer>(
-              //       () => VerticalDragGestureRecognizer()
-              //         ..onDown = (DragDownDetails dragDownDetails) {
-              //           _controller.getScrollY().then((y) {
-              //             if (kDebugMode) {
-              //               print('y value: $y');
-              //               print('globalPosition: ${dragDownDetails.globalPosition}');
-              //               print('dx: ${dragDownDetails.globalPosition.dx}');
-              //               print('dy: ${dragDownDetails.globalPosition.dy}');
-              //               print(
-              //                   'direction: ${dragDownDetails.globalPosition.direction}');
-              //               print(
-              //                   'localPosition: ${dragDownDetails.localPosition}');
-              //             }
-              //             if (y == 0 &&
-              //                 dragDownDetails.globalPosition.direction < 1 &&
-              //                 dragDownDetails.globalPosition.direction > 0.7 &&
-              //                 dragDownDetails.globalPosition.dy < 400
-              //             ) {
-              //               _controller.reload();
-              //             }
-              //           });
-              //         })),
             ),
           ),
           Positioned(
